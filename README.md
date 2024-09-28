@@ -22,5 +22,5 @@ Un projet de chat en temps réel utilisant Firebase pour la gestion des messages
 
 1. Clonez ce dépôt :
    ```bash
-   git clone https://github.com/DualsFWShield/live-online-chat.git
+   git clone https://github.com/DualsFWShield/live-chat.git
    cd votre-repo
