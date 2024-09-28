@@ -2,6 +2,8 @@
 
 Un projet de chat en temps réel utilisant Firebase pour la gestion des messages, des utilisateurs et des fichiers. Ce chat permet une interaction facile entre les utilisateurs, avec la possibilité d'utiliser un chat publique.
 
+[Acceder au chat en ligne](https://dualsfwshield.github.io/live-chat/)
+
 ## Fonctionnalités
 
 - **Chat Public** : Partagez des messages avec tous les utilisateurs connectés.
