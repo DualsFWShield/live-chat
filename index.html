@@ -2,84 +2,50 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chat en ligne</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Chat en Temps Réel</title>
+    <link rel="stylesheet" href="styles.css">
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
+    
+    <!-- Day.js for Date Formatting -->
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
 </head>
 <body>
-    <script type="module">
-        // Import the functions you need from the SDKs you need
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
-        import { getDatabase, ref, push, onChildAdded } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-database.js";
+    <div class="chat-container">
+        <div id="user-count" class="user-count">Utilisateurs en ligne: 0</div>
         
-        // Your web app's Firebase configuration
-        const firebaseConfig = {
-          apiKey: "AIzaSyCSSoY4D_UfGpc-EXAStXNDVXPtpPwwARw",
-          authDomain: "live-chat-00.firebaseapp.com",
-          projectId: "live-chat-00",
-          storageBucket: "live-chat-00.appspot.com",
-          messagingSenderId: "825591531103",
-          appId: "1:825591531103:web:cdf9df57460d5daa5cfdea",
-          measurementId: "G-36TSWRPZEQ",
-          databaseURL: "https://live-chat-00-default-rtdb.firebaseio.com/"
-        };
-      
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const database = getDatabase(app);
+        <div class="chat-messages" id="messages"></div>
         
-        document.getElementById('join-chat').addEventListener('click', function() {
-            const username = document.getElementById('username').value.trim();
-            if (username) {
-                document.getElementById('user-info').classList.add('hidden');
-                document.getElementById('chat-box').classList.remove('hidden');
-                document.getElementById('messages').innerHTML += `<div class="message"><strong>${username}</strong> a rejoint le chat.</div>`;
+        <form id="message-form" class="message-form">
+            <button type="button" id="emoji-button" class="emoji-button">😊</button>
+            <input type="text" id="message-input" placeholder="Entrez votre message..." autocomplete="off" required>
+            <button type="submit" class="send-button">Envoyer</button>
+        </form>
         
-                // Écoute des nouveaux messages
-                const messagesRef = ref(database, 'messages');
-                onChildAdded(messagesRef, function(snapshot) {
-                    const messageData = snapshot.val();
-                    document.getElementById('messages').innerHTML += `<div class="message"><strong>${messageData.username}:</strong> ${messageData.message}</div>`;
-                    scrollToBottom();
-                });
-            } else {
-                alert("Veuillez entrer un nom d'utilisateur.");
-            }
-        });
+        <form id="file-form" class="file-form">
+            <input type="file" id="file-input" accept="image/*,application/pdf,application/zip" />
+            <button type="submit" class="send-file-button">Envoyer le fichier</button>
+        </form>
         
-        document.getElementById('send-message').addEventListener('click', function() {
-            const messageInput = document.getElementById('message-input');
-            const message = messageInput.value.trim();
-            const username = document.getElementById('username').value;
-        
-            if (message) {
-                // Envoie du message à Firebase
-                const messagesRef = ref(database, 'messages');
-                push(messagesRef, {
-                    username: username,
-                    message: message
-                });
-                messageInput.value = '';
-                scrollToBottom();
-            }
-        });
-        
-        function scrollToBottom() {
-            const messages = document.getElementById('messages');
-            messages.scrollTop = messages.scrollHeight;
-        }
-      </script>
-    
-    <div id="chat-container">
-        <div id="user-info">
-            <input type="text" id="username" placeholder="Entrez votre nom">
-            <button id="join-chat">Rejoindre le chat</button>
-        </div>
-        <div id="chat-box" class="hidden">
-            <div id="messages"></div>
-            <input type="text" id="message-input" placeholder="Entrez votre message...">
-            <button id="send-message">Envoyer</button>
-        </div>
+        <form id="search-form" class="search-form">
+            <input type="text" id="search-input" placeholder="Rechercher sur Internet..." autocomplete="off">
+            <button type="submit" class="search-button">Rechercher</button>
+        </form>
     </div>
+    
+    <!-- Emoji Button Library -->
+    <script type="module">
+        import { EmojiButton } from 'https://cdn.jsdelivr.net/npm/@joeattardi/emoji-button@4.6.2/dist/index.min.js';
+        window.EmojiButton = EmojiButton;
+    </script>
+    
+    <!-- Votre Script Principal -->
+    <script type="module" src="app.js"></script>
 </body>
 </html>
